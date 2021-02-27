@@ -190,3 +190,22 @@ cart = [1, 2, 3]
 ```
 
 ------
+
+## **Type Inference** (inferência de tipo)
+
+Nos exemplos acima nós criamos a variável e atribuimos os tipos pra elas e depois passavamos os valores.
+
+Porém existem situações que não precisamos criar a variável para depois atribuirmos o valor, podemos simplesmente passar o valor da variável logo de cara. Exemplo:
+
+```typescript
+let text = 'mensagem definida'
+```
+
+Nesse caso o `typescript` já entende que a variável `text` é do tipo `string`, pois atribuimos uma `string` pra ele.
+
+Se tentarmos mudar o valor da variável depois disso ele dará erro, pois o tipo já foi inferido acima. Exemplo:
+
+```typescript
+let text = 'mensagem definida'
+text = true
+```
