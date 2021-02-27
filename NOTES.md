@@ -209,3 +209,30 @@ Se tentarmos mudar o valor da variável depois disso ele dará erro, pois o tipo
 let text = 'mensagem definida'
 text = true
 ```
+
+------
+
+## **Type Aliases**
+
+Com o **type alias** nós conseguimos facilitar o código, para que não precisemos ficar escrevendo a mesma coisa várias vezes. Exemplo:
+
+```typescript
+type Uid = number | string
+
+function logDetails(uid: Uid, item: string) {
+  console.log(`O produto ${item} tem o código ${uid}.`)
+}
+
+function logInfo(uid: Uid, user: string) {
+  console.log(`O usuário ${user} tem o código de usuário: ${uid}.`)
+}
+
+
+logDetails(123, 'sapato')
+logDetails('123', 'sapato')
+
+logInfo(456, 'João')
+logInfo('456', 'João')
+```
+
+Nesse exemplo isso facilita caso tenhamos muitas funções que vão utilizar esse `uid`, assim não precisariamos ficar escrevendo `uid: number | string` todas as vezes.
