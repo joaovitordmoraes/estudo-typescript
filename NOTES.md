@@ -212,7 +212,7 @@ text = true
 
 ------
 
-## **Type Aliases**
+## **Type Alias**
 
 Com o **type alias** nós conseguimos facilitar o código, para que não precisemos ficar escrevendo a mesma coisa várias vezes. Exemplo:
 
@@ -236,3 +236,53 @@ logInfo('456', 'João')
 ```
 
 Nesse exemplo isso facilita caso tenhamos muitas funções que vão utilizar esse `uid`, assim não precisariamos ficar escrevendo `uid: number | string` todas as vezes.
+
+### **Estendendo Type Aliases**
+
+Imagine que temos um jogo online, e nesse jogo temos as _infos_ da conta, temos também o _info_ do char para nosso personagem.
+
+Nesse pensamento em primeiro momento nós iremos criar um _type_ para essa conta e para o char. Exemplo:
+
+```typescript
+type AccountInfo = {
+  id: number;
+  name: string;
+  email?: string;
+}
+
+type CharInfo = {
+  nickname: string;
+  level: number;
+}
+
+const account: AccountInfo = {
+  id: 1,
+  name: 'João',
+  email: 'teste@teste.com'
+}
+
+const char: CharInfo = {
+  nickname: 'Link',
+  level: 100
+}
+```
+
+> **OBS.:** Perceba que no item _email_ nós temos uma `?`, isso significa que essa info é opcional, se passarmos o mouse em cima dela veremos que ela nos retorna os tipos `string | undefined`, essa é uma outra maneira de fazermos essa situação opcional.
+
+E se quisessemos centralizar essas _infos_ tanto ta conta como do char em um mesmo local?
+
+Para unirmos esses dois tipos é bem simples, basta que nós adicionemos a um novo _type_ player e passemos os types dos anteriores unidos por uma intercessão (intersection). Exemplo:
+
+```typescript
+type PlayerInfo = AccountInfo & CharInfo
+
+const player: PlayerInfo = {
+  id: 1,
+  nickname: 'Link',
+  level: 100,
+  name: 'João',
+  email: 'teste@teste.com'
+}
+```
+
+> **OBS.:** Repare que nesse caso de `intersection` tanto faz a ordem com que passamos os dados, ele funciona da mesma maneira. O que não podemos fazer é tirar alguma info obrigatória como por exemplo o `id`, só podemos tirar o `email` pois o definimos como opcional.
