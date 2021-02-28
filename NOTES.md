@@ -33,6 +33,12 @@ tsc
 
 Assim o arquivo será salvo na pasta correspondente.
 
+Também podemos compilar e ficar esperando por novas mudanças podemos usar o comando:
+
+```bash
+tsc --watch
+```
+
 ------
 
 ## **Types**
@@ -286,3 +292,367 @@ const player: PlayerInfo = {
 ```
 
 > **OBS.:** Repare que nesse caso de `intersection` tanto faz a ordem com que passamos os dados, ele funciona da mesma maneira. O que não podemos fazer é tirar alguma info obrigatória como por exemplo o `id`, só podemos tirar o `email` pois o definimos como opcional.
+
+------
+
+## **Classes**
+
+Para criarmos uma classe nós precisamos nós precisamos criar as infos e criar um método, no caso um `constructor`. 
+
+O `constructor` recebe as props que o objeto vai receber. Recebendo os valores conseguimos assinalar os valores como abaixo:
+
+```typescript
+class UserAccount {
+  name: string;
+  age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+}
+```
+
+Se quisermos já criar um objeto dessa classe podemos da seguinte maneira:
+
+```typescript
+class UserAccount {
+  name: string;
+  age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+}
+
+const foo = new UserAccount('Link', 100)
+console.log(foo)
+```
+
+Podemos também criar outros métodos dentro desse objeto dessa maneira:
+
+```typescript
+class UserAccount {
+  name: string;
+  age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  logDetails() {
+    console.log(`The player ${this.name} is ${this.age} years old.`)
+  }
+}
+
+const foo = new UserAccount('Link', 100)
+console.log(foo)
+foo.logDetails()
+```
+
+### **Classes Extend**
+
+Podemos criar uma `class` com todas as infos dela e também ter as infos da `class anterior`, podemos fazer isso da seguinte maneira:
+
+```typescript
+class UserAccount {
+  name: string;
+  age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  logDetails() {
+    console.log(`The player ${this.name} is ${this.age} years old.`)
+  }
+}
+
+class CharAccount extends UserAccount {
+  nickname: string;
+  level: number;
+
+  constructor(name: string, age: number, nickname: string, level: number) {
+    super(name, age)
+
+    this.nickname = nickname;
+    this.level = level;
+  }
+}
+
+const foo = new UserAccount('Link', 100)
+console.log(foo)
+foo.logDetails()
+
+const matt = new CharAccount('Matt', 45, 'Link', 100)
+console.log(matt)
+matt.logDetails()
+```
+
+> **OBS.:** Note que nesse caso que para pegarmos as props da `class` que estamos "estendendo" utilizamos a `super()`, que pega as props da `class` "superior" ou "acima".
+
+Assim conseguimos em uma `class` herdar outra `class` e utilizar os métodos da anterior. Isso é uma das grandes vantagens da POO (programação orientada a objetos).
+
+### **Modifiers**
+
+Digamos que tenhamos alguma propriedade que queremos que não possa ser modificada depois da sua criação. Exemplo:
+
+```typescript
+const matt = new CharAccount('Matt', 45, 'Link', 100)
+matt.nickname = 'Zelda';
+console.log(matt)
+```
+
+Nesse exemplo utilizado nós alteramos o `nickname` após sua criação. 
+
+Para evitarmos esse tipo de situação existem algumas formas:
+
+1. **Private**: A mais "engessada" seria utilizando a palavra `private` antes da prop que queremos bloquear. Exemplo:
+
+```typescript
+class CharAccount extends UserAccount {
+  private nickname: string;
+  level: number;
+
+  constructor(name: string, age: number, nickname: string, level: number) {
+    super(name, age)
+
+    this.nickname = nickname;
+    this.level = level;
+  }
+}
+```
+
+Assim teriamos um erro quando tentarmos alterar essa prop, pois neste caso nenhum lugar externo conseguiria chama-la.
+
+O mesmo vale se quisermos visualizar essa prop fora da função, como por exemplo com um `console.log`, assim:
+
+```typescript
+class CharAccount extends UserAccount {
+  private nickname: string;
+  level: number;
+
+  constructor(name: string, age: number, nickname: string, level: number) {
+    super(name, age)
+
+    this.nickname = nickname;
+    this.level = level;
+  }
+}
+
+const matt = new CharAccount('Matt', 45, 'Link', 100)
+console.log(matt.nickname)
+```
+
+Com o `private` esse `console.log` dará erro e não permitirá que o valor seja mostrado.
+
+2. **Read only**: Essa opção permite que a `prop` seja lida fora da função, porém não poderá ser alterada. Exemplo:
+
+```typescript
+class CharAccount extends UserAccount {
+  private nickname: string;
+  readonly level: number;
+
+  constructor(name: string, age: number, nickname: string, level: number) {
+    super(name, age)
+
+    this.nickname = nickname;
+    this.level = level;
+  }
+}
+
+const matt = new CharAccount('Matt', 45, 'Link', 100)
+console.log(matt)
+console.log(matt.level)
+```
+
+Se tentarmos alterar essa `prop` _level_ receberemos a mensagem de que ela não pode ser alterada, pois esta `prop` está definida como read-only.
+
+3. **Protected**: É quando conseguimos chamar dentro da `class` ou da `class que está estendendo ela`, porém não conseguimos chama-la por fora.
+
+```typescript
+class UserAccount {
+  name: string;
+  protected age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  logDetails() {
+    console.log(`The player ${this.name} is ${this.age} years old.`)
+  }
+}
+
+class CharAccount extends UserAccount {
+  private nickname: string;
+  readonly level: number;
+
+  constructor(name: string, age: number, nickname: string, level: number) {
+    super(name, age)
+
+    this.nickname = nickname;
+    this.level = level;
+  }
+
+  logCharDetails() {
+    console.log(`The player ${this.name} is ${this.age} and has the char ${this.nickname} at level ${this.level}`)
+  }
+}
+
+```
+
+Nese caso, como no `private`, não conseguiremos chamar a `prop` _age_ para ser mostrada fora da class.
+
+> **OBS.:** `Private` e `Protected` são bem parecidos, porém no caso de `private` a `prop` só poderá ser chamada dentro da sua class mesmo, não podendo ser utilizada na class estendida.
+
+Outra `prop` que não se encaixa nesses casos de bloquear alterações é a implícita por default: `public`.
+
+Nela podemos fazer todo tipo de ação com as `props`, como editar e ser chamada fora da função livremente.
+
+### **Accessors**
+
+Basicamente nós temos dois métodos os `get` e `set` onde podemos pegar valores dentro da nossa `class`.
+
+1. **Get**: Com ele podemos pegar valores dentro da nossa `class`:
+
+```typescript
+class CharAccount extends UserAccount {
+  private nickname: string;
+  readonly level: number;
+
+  constructor(name: string, age: number, nickname: string, level: number) {
+    super(name, age)
+
+    this.nickname = nickname;
+    this.level = level;
+  }
+
+  get getLevel() {
+    return this.level
+  }
+
+  logCharDetails() {
+    console.log(`The player ${this.name} is ${this.age} and has the char ${this.nickname} at level ${this.level}`)
+  }
+}
+
+const matt = new CharAccount('Matt', 45, 'Link', 100)
+console.log(matt.getLevel)
+```
+
+Repare que passamos o `getLevel` como se fosse uma `prop` e não uma `função`. Ela é uma `prop` que vai te retornar um valor, porém diferente de chamar a `prop` simplesmente ela pode fazer alguma regra de validação para nos retornar um valor. Exemplo:
+
+```typescript
+class CharAccount extends UserAccount {
+  private nickname: string;
+  readonly level: number;
+
+  constructor(name: string, age: number, nickname: string, level: number) {
+    super(name, age)
+
+    this.nickname = nickname;
+    this.level = level;
+  }
+
+  get getLevel() {
+    console.log('--Poderíamos ter uma validação aqui--')
+    return this.level
+  }
+
+  logCharDetails() {
+    console.log(`The player ${this.name} is ${this.age} and has the char ${this.nickname} at level ${this.level}`)
+  }
+}
+
+const matt = new CharAccount('Matt', 45, 'Link', 100)
+console.log(matt.getLevel)
+```
+
+2. **Set**: Com ele podemos "setar" valores dentro da nossa `class`, ou seja, adicionar ou definir novos valores. Exemplo:
+
+```typescript
+class CharAccount extends UserAccount {
+  private nickname: string;
+  level: number;
+
+  constructor(name: string, age: number, nickname: string, level: number) {
+    super(name, age)
+
+    this.nickname = nickname;
+    this.level = level;
+  }
+
+  get getLevel() {
+    return this.level
+  }
+
+  set setLevel(level: number) {
+    this.level = level
+  }
+
+  logCharDetails() {
+    console.log(`The player ${this.name} is ${this.age} and has the char ${this.nickname} at level ${this.level}`)
+  }
+}
+
+const matt = new CharAccount('Matt', 45, 'Link', 100)
+matt.setLevel = 499
+console.log(matt.getLevel)
+```
+
+### **Abstract Class**
+
+É uma classe abstrata onde não se é possível criar objetos a partir dela, porém é possível extendê-la. Exemplo:
+
+```typescript
+abstract class UserAccount {
+  public name: string;
+  protected age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  logDetails() {
+    console.log(`The player ${this.name} is ${this.age} years old.`)
+  }
+}
+
+class CharAccount extends UserAccount {
+  private nickname: string;
+  level: number;
+
+  constructor(name: string, age: number, nickname: string, level: number) {
+    super(name, age)
+
+    this.nickname = nickname;
+    this.level = level;
+  }
+
+  get getLevel() {
+    return this.level
+  }
+
+  set setLevel(level: number) {
+    this.level = level
+  }
+
+  logCharDetails() {
+    console.log(`The player ${this.name} is ${this.age} and has the char ${this.nickname} at level ${this.level}`)
+  }
+}
+
+//aqui não podemos mais criar instância de classe abstrata
+const foo = new UserAccount('Link', 100)
+
+const matt = new CharAccount('Matt', 45, 'Link', 100)
+```
+
+A classe abstrata é interessante para quando criamos uma `class` que serve somente de modelo para outras classes e não queremos permitir que nada seja criado a partir dela.
+
