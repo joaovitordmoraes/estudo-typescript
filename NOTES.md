@@ -6,14 +6,14 @@ Primeiramente entraremos no site oficial do [TypeScript](https://www.typescriptl
 
 > **OBS.:** É necessário instalar o [Node.js](https://nodejs.org/en/) para que a instalação do TypeScript ocorra corretamente.
 
-No caso rodamos para instalar o comando:
+No caso rodamos o comando abaixo para instalar:
 ```bash
 npm install typescript
 ```
 
 No caso também é legal instalar o [Nodemon](https://nodemon.io) para podermos rodar o nosso código e conferi-lo no terminal.
 
-No caso rodamos para instalar o comando:
+No caso rodamos o comando abaixo para instalar:
 ```bash
 npm install -g nodemon
 ```
