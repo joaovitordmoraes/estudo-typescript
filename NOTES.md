@@ -678,3 +678,102 @@ const matt = new CharAccount('Matt', 45, 'Link', 100)
 
 A classe abstrata é interessante para quando criamos uma `class` que serve somente de modelo para outras classes e não queremos permitir que nada seja criado a partir dela.
 
+------
+
+## **Interfaces**
+
+As `interfaces` nada mais são do que uma estrutura de dados para descrever a estrutura um objeto.
+
+```typescript
+interface Game {
+  title: string;
+  description: string;
+  genre: string;
+  platform: string[];
+  getSimilars: (title: string) => void
+}
+
+const tlou: Game = {
+  title: 'The Last of us',
+  description: 'The best game in the world',
+  genre: 'Action',
+  platform: ['PS3', 'PS4'],
+  getSimilars: (title: string) => {
+    console.log(`Similar games to ${title}: Uncharted, A Plague Tale, Metro`)
+  }
+}
+
+tlou.getSimilars(tlou.title)
+```
+
+Assim como nas classes, aqui podemos utilizar dos `modifiers` para configurar algo como opcional, privado, etc.
+
+```typescript
+interface Game {
+  title: string;
+  description: string;
+  readonly genre: string;
+  platform?: string[];
+  getSimilars: (title: string) => void
+}
+...
+```
+
+Também como no `type alias`, aqui nós podemos estender as interfaces para outras, porém de uma maneira um pouco diferente. Exemplo:
+```typescript
+interface Game {
+  title: string;
+  description: string;
+  readonly genre: string;
+  platform?: string[];
+  getSimilars?: (title: string) => void
+}
+
+...
+
+tlou.getSimilars(tlou.title)
+
+interface DLC extends Game {
+  originalGame: Game;
+  newContent: string[];
+}
+
+const leftbehind: DLC = {
+  title: 'The Last of us - Left Behind',
+  description: 'You play as Ellie before the original game',
+  genre: 'Action',
+  platform: ['PS4'],
+  originalGame: tlou,
+  newContent: ['3 hours story', 'new characters']
+}
+```
+
+Repare que nesse caso modificamos um pouco o funcionamento da prop `getSimilars` da `interface` Game para que ela se tornasse opcional, porém como na possibilidade dessa prop ser opcional podemos ter o retorno esperado **ou** um retorno undefined, e por sua vez não é possível se chamar um método undefined.
+
+Para essa possibilidade funcionar, nós precisaremos validar que esse método realmente vai existir quando for chamado, chamamos isso de **type guard**. Exemplo:
+
+```typescript
+...
+
+if(tlou.getSimilars) {
+  tlou.getSimilars(tlou.title)
+}
+
+...
+```
+
+Conseguimos também implementar uma classe baseada numa `interface`, assim a classe precisa ter todos os tipos definidos da interface definida. Exemplo:
+
+```typescript
+class CreateGame implements Game {
+  title: string;
+  description: string;
+  genre: string;
+
+  constructor(t: string, d: string, g: string) {
+    this.title = t;
+    this.description = d;
+    this.genre = g;
+  }
+}
+```
