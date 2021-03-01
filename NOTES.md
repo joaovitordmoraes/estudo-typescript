@@ -682,7 +682,7 @@ A classe abstrata é interessante para quando criamos uma `class` que serve some
 
 ## **Interfaces**
 
-As `interfaces` nada mais são do que uma estrutura de dados para descrever a estrutura um objeto.
+As `interfaces` nada mais são do que uma estrutura de dados para descrever a estrutura de um objeto.
 
 ```typescript
 interface Game {
@@ -777,3 +777,132 @@ class CreateGame implements Game {
   }
 }
 ```
+------
+
+## **Type Alias vs Interface**
+
+1. **Definição**
+```typescript
+//Type Alias
+type Game = {
+  title: string;
+}
+
+type DLC = {
+  extra: string;
+}
+
+//Interface
+interface Game {
+  title: string;
+}
+
+interface DLC {
+  extra: string;
+}
+```
+
+2. **Intersection / Extend**
+```typescript
+//Type Alias
+type GameCollection = Game & DLC;
+
+//Interface
+interface GameCollection extends Game, DLC {...}
+```
+
+3. **Implements**
+```typescript
+//Type Alias e Interface
+class CreateGame implements GameCollection {...}
+```
+
+4. **Declarar funções**
+```typescript
+//Type Alias
+type getSimilars = (title: string) => void;
+
+//Interface
+interface getSimilars {
+  (title: string): void;
+}
+```
+
+### **Principais diferenças**:
+
+1. Na parte da declaração, no `type alias` nós conseguimos declarar os tipos primitivos, já na interface não.
+```typescript
+//Type Alias
+//permite declarar tipos primitivos
+type ID = string | number;
+```
+
+Se quisermos estender uma interface com um `number` não conseguiremos, pois ele apresenta um erro e diz que só estamos nos referindo a um tipo. Exemplo:
+```typescript
+//Interface
+interface ID extends number {}
+```
+2. Com o `type alias` conseguimos declarar tuplas normalmente
+```typescript
+//Type Alias
+type Tuple = [number, number];
+//como definimos somente dois elementos na tupla,
+//nesse caso será informado um erro
+//pois ele limita realmente os valores
+[1, 2, 3] as Tuple;
+```
+
+Já no caso da `interface`, se criarmos uma tupla com _chave/valor_ ele nos deixará adicionarmos quantos valores quisermos. Exemplo:
+
+```typescript
+//Interface
+interface Tuple {
+  0: number;
+  1: number;
+}
+
+//aqui se passarmos quantos valores a mais quisermos,
+//sem nos importarmos com o tipo
+//ele irá adicionar normalmente sem erros
+//por isso não consiguimos definir tuplas na interface
+[1, 2, 3, "string"] as Tuple;
+```
+
+3. **Declaração por escopo**
+
+- `type alias`: só é permitido uma única declaração por escopo.
+- `interface`: podemos ter múltiplas declarações por escopo que ele irá unir no mesmo nome.
+
+```typescript
+//Type Alias
+//aqui ele não vai permitir que nós estendamos
+//esse type com o mesmo nome para reutilizarmos 
+//ou adicionarmos mais coisas
+type JQuery = { a: string };
+type JQuery = { b: string };
+
+//Interface
+//nesse caso ele vai "mergear" esses dois tipos 
+//com o mesmo nome, então ele acaba ficando 
+//tanto com o tipo "a" quanto o tipo "b".
+interface JQuery {
+  a: string;
+}
+
+interface JQuery {
+  b: string;
+}
+
+const $: JQuery = {
+  a: 'bla',
+  b: 'foo'
+}
+```
+
+### **Conclusão**
+
+Caso estejamos criando uma lib que precise ser extensível, onde já temos métodos e pessoas queiram estendê-la e criar outros novos, usaremos a `interface`, porque ela irá permitir que eles sejam "mergeados" a ela.
+
+Quando estivermos criando mais objetos/classes (POO) prefira utilizar `interface`.
+
+O `type alias` se torna mais prático para utilizar os tipos primitívos, com ele precisamos escrever menos e na maioria das vezes ele é mais recomendado iniciar um projeto utilizando ele e caso mais pra frente precisemos estender ou transformar em alguma lib separada mudamos para a `interface`.
