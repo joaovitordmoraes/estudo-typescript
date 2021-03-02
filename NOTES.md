@@ -25,6 +25,7 @@ Para rodar o código e conferirmos no terminal utilizamos o comando:
 nodemon [arquivo.js]
 ```
 </details>
+
 ------
 
 ## **Compilar**
