@@ -31,6 +31,7 @@ nodemon [arquivo.js]
 ## **Compilar**
 
 <details><summary>Veja mais</summary>
+
 - Para compilar um único arquivo nós usamos o comando: 
 ```bash
 tsc [arquivo.ts]
