@@ -906,3 +906,164 @@ Caso estejamos criando uma lib que precise ser extensível, onde já temos méto
 Quando estivermos criando mais objetos/classes (POO) prefira utilizar `interface`.
 
 O `type alias` se torna mais prático para utilizar os tipos primitívos, com ele precisamos escrever menos e na maioria das vezes ele é mais recomendado iniciar um projeto utilizando ele e caso mais pra frente precisemos estender ou transformar em alguma lib separada mudamos para a `interface`.
+
+------
+
+## **Generics**
+
+Uma das coisas mais importantes de quando escrevemos código é tentar fazer ele o mais reutilizavel possível, para conseguirmos atingir esse objetivo nós precisamos criar os nossos métodos mais _genéricos_.
+
+Precisamos fazer com que ele aceite vários tipos de entradas, argumentos e tudo mais para termos o resultado definido.
+
+É para isso que em meio uma linguagem tipada onde já definimos fortemente os tipos logo no começo que existem os **generics**.
+
+Abaixo temos uma função que permite que entremos com dois tipos de dados, `number` ou `string`:
+
+```typescript
+function useState() {
+  let state: number | string;
+
+  function getState() {
+    return state;
+  }
+
+  function setState(newState: number | string) {
+    state = newState;
+  }
+
+  return { getState, setState };
+}
+
+const newState = useState();
+
+newState.setState(123)
+console.log(newState.getState())
+
+newState.setState('foo')
+console.log(newState.getState())
+```
+
+Assim podemos entrar com dois tipos de dados que irá funcionar, porém e se quisermos que após entrar o primeiro tipo de dado somente ele seja o correto?
+
+Por exemplo, se iniciarmos com uma `string` da próxima vez que tentarmos passar o tipo de dado ele não aceite mais o `number`, pois o tipo vai foi definido anteriormente. Nesse momento entra o **generic**:
+
+```typescript
+function useState<S>() {
+  let state: S;
+
+  function getState() {
+    return state;
+  }
+
+  function setState(newState: S) {
+    state = newState;
+  }
+
+  return { getState, setState };
+}
+
+...
+```
+
+Repare que antes dos `()` colocamos os símbolos de `<>`, ali nós iremos passar os nossos tipos, em geral nós usamos certas letras para poder significar alguma coisa, não é uma regra a letra que nós poderemos usar, porém por convenção algumas letras já são utilizadas, elas são:
+
+```typescript
+// letra => o que ela quer dizer
+S => State
+T => Type
+K => Key
+V => Value
+E => Element
+```
+
+Essas letras não são obrigatórias, nós podemos utilizar o que quisermos. Elas representam que vamos poder trabalhar com algo do tipo "letra".
+
+Podemos ver que o código funciona normalmente, porém ainda está aceitando os dois tipos de entradas, isso porque não definimos o que será esse `S`. Se passarmos o mouse em cima da função podemos ver que temos um novo `type` que não chegamos a ver antes, o `unknown`.
+
+O tipo `unknown` é bem parecido com o tipo `any`, pois o `any` aceita qualquer coisa, nele você também passar qualquer coisa, a diferença é que no momento que definirmos o tipo dele, ele será somente aquilo. Por exemplo:
+
+```typescript
+...
+
+const newState = useState<boolean>();
+
+//essa opção continua funcionando normalmente
+newState.setState(true)
+console.log(newState.getState())
+
+//repare que como definimos o useState como boolean
+//essa opção parou de funcionar
+newState.setState(123)
+console.log(newState.getState())
+
+//repare que como definimos o useState como boolean
+//essa opção parou de funcionar
+newState.setState('foo')
+console.log(newState.getState())
+```
+
+Se quisermos manter na ideia inicial dessa função ser somente `string` ou `number`, para evitar que qualquer coisa diferente seja passada, podemos ainda limitar essas possibilidades assim:
+
+```typescript
+function useState<S extends number | string>() {
+  let state: S;
+
+  function getState() {
+    return state;
+  }
+
+  function setState(newState: S) {
+    state = newState;
+  }
+
+  return { getState, setState };
+}
+
+...
+```
+
+Quando fazemos isso dizemos que o nosso `S` vai estender dos tipos `string` ou `number`, assim a função não aceitará nada fora dessas opções.
+
+Podemos ainda evitar de passar a opção na hora de utilizar o nosso **setState()** caso não queiramos passar nada ou se quisermos já iniciar com um padrão, fazendo da seguinte maneira:
+
+```typescript
+function useState<S extends number | string = number>() {
+  let state: S;
+
+  function getState() {
+    return state;
+  }
+
+  function setState(newState: S) {
+    state = newState;
+  }
+
+  return { getState, setState };
+}
+
+...
+```
+
+Só temos que ficar atentos, com esse `=`, ele não tem relação com a parte anterior da `extends`, para facilitar a nossa leitura e evitar um nó na cabeça podemos declarar de outras maneiras, por exemplo:
+
+```typescript
+type numOrStr = number | string;
+
+function useState<S extends numOrStr = number>() {
+  let state: S;
+
+  function getState() {
+    return state;
+  }
+
+  function setState(newState: S) {
+    state = newState;
+  }
+
+  return { getState, setState };
+}
+
+...
+```
+
+Isso não nos impede de passarmos o tipo que desejamos na hora de iniciar nosso `useState()`, ele somente inicia com o padrão de `number` como foi definido previamente.
