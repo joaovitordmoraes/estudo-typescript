@@ -1067,3 +1067,118 @@ function useState<S extends numOrStr = number>() {
 ```
 
 Isso não nos impede de passarmos o tipo que desejamos na hora de iniciar nosso `useState()`, ele somente inicia com o padrão de `number` como foi definido previamente.
+
+------
+
+## **Type utilities**
+
+Se criarmos um todo list como o do exemplo abaixo e depois quisermos alterar seu estado para completo, poderiamos fazer dessa maneira normalmente:
+
+```typescript
+type Todo = {
+  title: string;
+  description: string;
+  completed: boolean;
+}
+
+const todo: Todo = {
+  title: 'Assistir Dark de novo',
+  description: 'Relembrar os detalhes',
+  completed: false
+}
+
+console.log(todo);
+
+todo.completed = true;
+
+console.log(todo);
+```
+
+Isso pode ser ok em alguns momentos, porém aqui acabamos de mutar o valor desse objeto, isso pode nos causar alguns side effects ou problemas no futuro também.
+
+Outro jeito de fazer isso seria criar uma função que gerasse um novo objeto a partir do objeto anterior, assim trabalhamos com o principio do conceito da `imutabilidade`.
+
+Primeiramente nós podemos utilizar um **type utility** onde primeiramente criamos o objeto e dizemos que depois de criado ele não poderá mais ser modificado. Exemplo:
+
+```typescript
+type Todo = {
+  title: string;
+  description: string;
+  completed: boolean;
+}
+
+const todo: Readonly<Todo> = {
+  title: 'Assistir Dark de novo',
+  description: 'Relembrar os detalhes',
+  completed: false
+}
+
+...
+```
+
+Desse jeito ele não permitirá que modifiquemos a prop `completed` como fizemos acima, pois ele está configurado para somente leitura.
+
+Agora podemos resolver essa situação criando uma função que retorna um objeto novo:
+
+- **Partial**:
+
+```typescript
+...
+
+function updateTodo(todo: Todo, fieldsToUpdate: Partial<Todo>) {
+  return {...todo, ...fieldsToUpdate}
+}
+
+const todo2: Todo = updateTodo(todo, { completed: true })
+
+console.log(todo2)
+
+```
+
+Aqui criamos uma função que recebe dois parâmetros, o `todo` e o `fieldsToUpdate`, onde o `todo` trás todo o objeto anterior e o `fieldsToUpdate` recebe uma parte "parcial" do `type Todo`. Isso quer dizer que esse "Partial" deixa todos os campos como sendo opcionais naquele momento, sem mexer no type principal que já existe, assim permitindo que nós alteremos só o que precisarmos/quisermos.
+
+> Importante prestarmos atenção no detalhe de que não podemos passar campos novos nesse `fieldsToUpdate`, ele somente deixa opcionais os campos já existentes, não nos permite criar nada novo.
+
+Imagine que estamos criando agora um componente onde só queremos mostrar o título e o estado (completo/incompleto), deixando a descrição de lado. Para isso temos o **type utility** `Pick`:
+
+- **Pick**:
+
+```typescript
+...
+
+type TodoPreview = Pick<Todo, 'title' | 'completed'>
+
+const todo3: TodoPreview = {
+  title: 'Fechar Ghost of Tsushima',
+  completed: false
+}
+
+console.log(todo3)
+```
+
+No `Pick` nós passamos qual o nosso **type** e quais as props dele queremos mostrar.
+
+Seguindo essa linha, também temos uma maneira de fazer o caminho inverso com o **type utility** `Omit`:
+
+- **Omit**:
+
+```typescript
+...
+
+type TodoPreview2 = Omit<Todo, 'description'>
+
+const todo4: TodoPreview2 = {
+  title: 'Fechar Ghost of Tsushima',
+  completed: false
+}
+
+console.log(todo4);
+```
+
+Podemos perceber que eles funcionam de maneiras bem similares.
+
+### **Por isso quando devemos utilizar `Pick` ou `Omit`?**
+
+Isso é meio fácil de decidir, nesse type que foi criado temos somente 3 campos, porém imagine algum type que tenha muito mais opções, se quisermos visualizar mais coisas será mais fácil utilizar o `Omit` para esconder o que não queremos mostrar e no caso contrário, se quisermos omitir mais coisas será mais fácil utilizar o `Pick` e selecionarmos o que queremos mostrar.
+
+Reperem que o processo nesse ponto é o inverso, porém não tão confuso.
