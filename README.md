@@ -13,3 +13,4 @@
 7. [Interfaces](https://github.com/joaovitordmoraes/estudo-typescript/blob/master/NOTES.md#interfaces)
 8. [Type Alias vc Interface](https://github.com/joaovitordmoraes/estudo-typescript/blob/master/NOTES.md#type-alias-vs-interface)
 9. [Generics](https://github.com/joaovitordmoraes/estudo-typescript/blob/master/NOTES.md#generics)
+10. [Type Utilities](https://github.com/joaovitordmoraes/estudo-typescript/blob/master/NOTES.md#type-utilities)
