@@ -29,6 +29,8 @@ nodemon [arquivo.js]
 ------
 
 ## **Compilar**
+
+<details><summary>Veja mais</summary>
 - Para compilar um único arquivo nós usamos o comando: 
 ```bash
 tsc [arquivo.ts]
@@ -62,12 +64,15 @@ Também podemos compilar e ficar esperando por novas mudanças podemos usar o co
 ```bash
 tsc --watch
 ```
+</details>
 
 ------
 
 ## **Types**
 
-### **Boolean**
+<details><summary>Veja mais</summary>
+
+<details><summary>Boolean</summary>
 
 O tipo `boolean` aceita somente valores `true` ou `false`, por exemplo:
 ```typescript
@@ -75,8 +80,10 @@ let isOpen: boolean
 isOpen = true
 ```
 Note que aqui **não** podemos utilizar _0_ ou _1_ nem _string vazia_ e _string preenchida_ para valores de `true` ou `false`.
+</details>
 
-### **String**
+
+<details><summary>String</summary>
 
 O tipo `string` recebe valores dentro de aspas simples (`''`), aspas duplas (`""`) e crase (` `` `)
 
@@ -85,8 +92,9 @@ Os três jeitos aceitam textos, porém com a crase podemos passar valores `javas
 let message: string
 message = `A variável isOpen está com o valor ${isOpen}`
 ```
+</details>
 
-### **Number**
+<details><summary>Number</summary>
 
 O tipo `number` aceita valores `int`, `float`, `hex`, `binary`, entre outros. Exemplos:
 ```typescript
@@ -100,8 +108,9 @@ total = 20.3
 //hexadecimal
 total = 0xff00
 ```
+</details>
 
-### **Array**
+<details><summary>Array</summary>
 
 O tipo `array` funciona um pouco diferente dos demais, além de declarar que o _type_ será `array`, é preciso declarar o que terá dentro dele.
 
@@ -118,7 +127,9 @@ list = [1, 2, 3]
 
 Note que na segunda opção precisamos escrever a palavra `Array` iniciando com letra maiúscula.
 
-### **Tuple**
+</details>
+
+<details><summary>Tuple</summary>
 
 Esse tipo `tuple` (tupla) nada mais é que um _array_ que já sabemos o número de elementos e o tipo deles.
 
@@ -136,7 +147,9 @@ title = [1, 'foo', 3]
 
 Esse terceiro valor não poderá ser assinalado, pois está definido que ele só terá duas variáveis na tupla.
 
-### **Enum**
+</details>
+
+<details><summary>Enum</summary>
 
 O tipo `enum` é um enumerator que serve para criarmos um conjunto **chave/valor**.
 
@@ -148,8 +161,9 @@ enum Colors {
   black = '#000'
 }
 ```
+</details>
 
-### **Any**
+<details><summary>Any</summary>
 
 O tipo `any` é o terror de quem trabalha com typescript, pois ele literalmente quer dizer **qualquer coisa**. Criando uma variável com esse tipo podemos fazer o que quisermos. Exemplo:
 
@@ -165,7 +179,9 @@ coisa = [1, 2, 3]
 
 Não é recomendável utilizar esse tipo em nenhum dos casos, no arquivo `tsconfig.json` podemos até pedir pra que ele seja barrado com a opção `noImplicitAny`. 
 
-### **Void**
+</details>
+
+<details><summary>Void</summary>
 
 O tipo `void` é utilizado para quando não temos retorno, ou não queremos retornar nada. Exemplo:
 
@@ -177,7 +193,9 @@ function logger(): void {
 
 No caso do exemplo utilizei um `console.log()`, nessa situação não precisaria nem mesmo tipar como `void`, pois o próprio `typescript` sabe que o retorno foi vazio.
 
-### **Null/Undefined**
+</details>
+
+<details><summary>Null/Undefined</summary>
 
 Esse tipo é utilizado quando não sabemos o valor ou ele ainda não foi definido. Na prática `null` e `undefined` não tem diferença nenhuma.
 
@@ -185,7 +203,9 @@ Esse tipo é utilizado quando não sabemos o valor ou ele ainda não foi definid
 type Bla = string | undefined
 ```
 
-### **Never**
+</details>
+
+<details><summary>Never</summary>
 
 Esse tipo é usado para o `typescript` nunca reclamar, é utilizado em situações em que queremos jogar algum erro na tela. Exemplo:
 
@@ -195,7 +215,9 @@ function error(): never {
 }
 ```
 
-### **Object**
+</details>
+
+<details><summary>Object</summary>
 
 O tipo `object` é qualquer coisa que não os tipos primitivos falados acima. Exemplo:
 
@@ -219,9 +241,15 @@ cart = 3
 cart = [1, 2, 3]
 ```
 
+</details>
+
+</details>
+
 ------
 
 ## **Type Inference** (inferência de tipo)
+
+<details><summary>Veja mais</summary>
 
 Nos exemplos acima nós criamos a variável e atribuimos os tipos pra elas e depois passavamos os valores.
 
@@ -240,9 +268,13 @@ let text = 'mensagem definida'
 text = true
 ```
 
+</details>
+
 ------
 
 ## **Type Alias**
+
+<details><summary>Veja mais</summary>
 
 Com o **type alias** nós conseguimos facilitar o código, para que não precisemos ficar escrevendo a mesma coisa várias vezes. Exemplo:
 
@@ -267,7 +299,7 @@ logInfo('456', 'João')
 
 Nesse exemplo isso facilita caso tenhamos muitas funções que vão utilizar esse `uid`, assim não precisariamos ficar escrevendo `uid: number | string` todas as vezes.
 
-### **Estendendo Type Aliases**
+<details><summary>Estendendo Type Aliases</summary>
 
 Imagine que temos um jogo online, e nesse jogo temos as _infos_ da conta, temos também o _info_ do char para nosso personagem.
 
@@ -317,9 +349,15 @@ const player: PlayerInfo = {
 
 > **OBS.:** Repare que nesse caso de `intersection` tanto faz a ordem com que passamos os dados, ele funciona da mesma maneira. O que não podemos fazer é tirar alguma info obrigatória como por exemplo o `id`, só podemos tirar o `email` pois o definimos como opcional.
 
+</details>
+
+</details>
+
 ------
 
 ## **Classes**
+
+<details><summary>Veja mais</summary>
 
 Para criarmos uma classe nós precisamos nós precisamos criar as infos e criar um método, no caso um `constructor`. 
 
@@ -376,7 +414,7 @@ console.log(foo)
 foo.logDetails()
 ```
 
-### **Classes Extend**
+<details><summary>Classes Extend</summary>
 
 Podemos criar uma `class` com todas as infos dela e também ter as infos da `class anterior`, podemos fazer isso da seguinte maneira:
 
@@ -420,7 +458,9 @@ matt.logDetails()
 
 Assim conseguimos em uma `class` herdar outra `class` e utilizar os métodos da anterior. Isso é uma das grandes vantagens da POO (programação orientada a objetos).
 
-### **Modifiers**
+</details>
+
+<details><summary>Modifiers</summary>
 
 Digamos que tenhamos alguma propriedade que queremos que não possa ser modificada depois da sua criação. Exemplo:
 
@@ -538,7 +578,9 @@ Outra `prop` que não se encaixa nesses casos de bloquear alterações é a impl
 
 Nela podemos fazer todo tipo de ação com as `props`, como editar e ser chamada fora da função livremente.
 
-### **Accessors**
+</details>
+
+<details><summary>Accessors</summary>
 
 Basicamente nós temos dois métodos os `get` e `set` onde podemos pegar valores dentro da nossa `class`.
 
@@ -628,8 +670,9 @@ const matt = new CharAccount('Matt', 45, 'Link', 100)
 matt.setLevel = 499
 console.log(matt.getLevel)
 ```
+</details>
 
-### **Abstract Class**
+<details><summary>Abstract Class</summary>
 
 É uma classe abstrata onde não se é possível criar objetos a partir dela, porém é possível extendê-la. Exemplo:
 
@@ -680,9 +723,15 @@ const matt = new CharAccount('Matt', 45, 'Link', 100)
 
 A classe abstrata é interessante para quando criamos uma `class` que serve somente de modelo para outras classes e não queremos permitir que nada seja criado a partir dela.
 
+</details>
+
+</details>
+
 ------
 
 ## **Interfaces**
+
+<details><summary>Veja mais</summary>
 
 As `interfaces` nada mais são do que uma estrutura de dados para descrever a estrutura de um objeto.
 
@@ -779,9 +828,13 @@ class CreateGame implements Game {
   }
 }
 ```
+</details>
+
 ------
 
 ## **Type Alias vs Interface**
+
+<details><summary>Veja mais</summary>
 
 1. **Definição**
 ```typescript
@@ -830,7 +883,7 @@ interface getSimilars {
 }
 ```
 
-### **Principais diferenças**:
+<details><summary>Principais diferenças</summary>
 
 1. Na parte da declaração, no `type alias` nós conseguimos declarar os tipos primitivos, já na interface não.
 ```typescript
@@ -901,6 +954,8 @@ const $: JQuery = {
 }
 ```
 
+</details>
+
 ### **Conclusão**
 
 Caso estejamos criando uma lib que precise ser extensível, onde já temos métodos e pessoas queiram estendê-la e criar outros novos, usaremos a `interface`, porque ela irá permitir que eles sejam "mergeados" a ela.
@@ -909,9 +964,13 @@ Quando estivermos criando mais objetos/classes (POO) prefira utilizar `interface
 
 O `type alias` se torna mais prático para utilizar os tipos primitívos, com ele precisamos escrever menos e na maioria das vezes ele é mais recomendado iniciar um projeto utilizando ele e caso mais pra frente precisemos estender ou transformar em alguma lib separada mudamos para a `interface`.
 
+</details>
+
 ------
 
 ## **Generics**
+
+<details><summary>Veja mais</summary>
 
 Uma das coisas mais importantes de quando escrevemos código é tentar fazer ele o mais reutilizavel possível, para conseguirmos atingir esse objetivo nós precisamos criar os nossos métodos mais _genéricos_.
 
@@ -1070,9 +1129,13 @@ function useState<S extends numOrStr = number>() {
 
 Isso não nos impede de passarmos o tipo que desejamos na hora de iniciar nosso `useState()`, ele somente inicia com o padrão de `number` como foi definido previamente.
 
+</details>
+
 ------
 
 ## **Type utilities**
+
+<details><summary>Veja mais</summary>
 
 Se criarmos um todo list como o do exemplo abaixo e depois quisermos alterar seu estado para completo, poderiamos fazer dessa maneira normalmente:
 
@@ -1122,7 +1185,7 @@ Desse jeito ele não permitirá que modifiquemos a prop `completed` como fizemos
 
 Agora podemos resolver essa situação criando uma função que retorna um objeto novo:
 
-- **Partial**:
+<details><summary>Partials</summary>
 
 ```typescript
 ...
@@ -1141,9 +1204,11 @@ Aqui criamos uma função que recebe dois parâmetros, o `todo` e o `fieldsToUpd
 
 > Importante prestarmos atenção no detalhe de que não podemos passar campos novos nesse `fieldsToUpdate`, ele somente deixa opcionais os campos já existentes, não nos permite criar nada novo.
 
-Imagine que estamos criando agora um componente onde só queremos mostrar o título e o estado (completo/incompleto), deixando a descrição de lado. Para isso temos o **type utility** `Pick`:
+Imagine que estamos criando agora um componente onde só queremos mostrar o título e o estado (completo/incompleto), deixando a descrição de lado. Para isso temos o **type utility** `Pick`.
 
-- **Pick**:
+</details>
+
+<details><summary>Pick</summary>
 
 ```typescript
 ...
@@ -1160,9 +1225,11 @@ console.log(todo3)
 
 No `Pick` nós passamos qual o nosso **type** e quais as props dele queremos mostrar.
 
-Seguindo essa linha, também temos uma maneira de fazer o caminho inverso com o **type utility** `Omit`:
+Seguindo essa linha, também temos uma maneira de fazer o caminho inverso com o **type utility** `Omit`.
 
-- **Omit**:
+</details>
+
+<details><summary>Omit</summary>
 
 ```typescript
 ...
@@ -1179,8 +1246,12 @@ console.log(todo4);
 
 Podemos perceber que eles funcionam de maneiras bem similares.
 
+</details>
+
 ### **Por isso quando devemos utilizar `Pick` ou `Omit`?**
 
 Isso é meio fácil de decidir, nesse type que foi criado temos somente 3 campos, porém imagine algum type que tenha muito mais opções, se quisermos visualizar mais coisas será mais fácil utilizar o `Omit` para esconder o que não queremos mostrar e no caso contrário, se quisermos omitir mais coisas será mais fácil utilizar o `Pick` e selecionarmos o que queremos mostrar.
 
 Reperem que o processo nesse ponto é o inverso, porém não tão confuso.
+
+</details>
