@@ -1,6 +1,7 @@
 # Anotações sobre TypeScript
 
 ## **Instalação**
+<details><summary>Veja mais</summary>
 
 Primeiramente entraremos no site oficial do [TypeScript](https://www.typescriptlang.org/#installation), nele terá a maneira correta e mais atual da instalação.
 
@@ -23,7 +24,7 @@ Para rodar o código e conferirmos no terminal utilizamos o comando:
 ```bash
 nodemon [arquivo.js]
 ```
-
+</details>
 ------
 
 ## **Compilar**
