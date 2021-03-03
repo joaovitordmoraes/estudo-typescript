@@ -1261,6 +1261,8 @@ Reperem que o processo nesse ponto é o inverso, porém não tão confuso.
 
 ## **Decorators**
 
+<details><summary>Veja mais</summary>
+
 Para começarmos a utilizar os `decorators`, que ainda não são lançados oficialmente na linguagem nós precisaremos editar novamente o nosso `tsconfig.json`:
 
 ```json
@@ -1377,5 +1379,7 @@ class Greeter {
 const pessoa = new Greeter('Pessoinha!')
 pessoa.greet()
 ```
+
+</details>
 
 </details>
