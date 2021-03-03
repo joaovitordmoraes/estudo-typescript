@@ -1256,3 +1256,126 @@ Isso é meio fácil de decidir, nesse type que foi criado temos somente 3 campos
 Reperem que o processo nesse ponto é o inverso, porém não tão confuso.
 
 </details>
+
+------
+
+## **Decorators**
+
+Para começarmos a utilizar os `decorators`, que ainda não são lançados oficialmente na linguagem nós precisaremos editar novamente o nosso `tsconfig.json`:
+
+```json
+{
+  //ativando essa opção nós poderemos
+  //utilizar os decorators no typescript
+  "experimentalDecorators": true,
+}
+```
+
+O `decorator` vai trabalhar em cima das partes anotadas para que consigamos adicionar coisas novas, podendo ficar de olho nesse elemento novo para caso ele altere ou precise de alguma validação, coisas desse tipo. 
+
+### Como se cria um decorator?
+
+Basta criarmos uma simples função, a diferença é que ela recebe alguns parâmetros por default baseado em cada decorator com qual estamos trabalho. 
+
+Exemplos:
+
+<details><summary>Class Decorator</summary>
+
+```typescript
+function setAPIVersion(apiVersion: string) {
+  return (constructor) => {
+    return class extends constructor {
+      version = apiVersion
+    }
+  }
+}
+
+//decorator - anotar a versão da API
+@setAPIVersion('1.0.0')
+class API {}
+
+console.log(new API())
+```
+
+</details>
+
+<details><summary>Property Decorator</summary>
+
+```typescript
+//Property decorator
+function minLength(length: number) {
+  return (target: any, key: string) => {
+    let val = target[key]
+
+    const getter = () => val;
+
+    const setter = (value: string) => {
+      if(value.length < length) {
+        console.log(`Error: você não pode criar ${key} com tamanho menor que ${length}.`)
+      } else {
+        val = value;
+      }
+    }
+
+    Object.defineProperty(target, key, {
+      get: getter,
+      set: setter
+    })
+  }
+}
+
+class Movie {
+  //validação - se for menor que 5 letras - error
+  @minLength(5)
+  title: string;
+
+  constructor(t: string) {
+    this.title = t;
+  }
+}
+
+const movie = new Movie('Interstellar')
+console.log(movie.title);
+```
+
+</details>
+
+<details><summary>Method Decorator</summary>
+
+```typescript
+//Method decorator
+function delay(ms: number) {
+  return (target: any, key: string, descriptor: PropertyDescriptor) => {
+    const originalMethod = descriptor.value;
+
+    descriptor.value = function(...args) {
+      console.log(`Esperando ${ms}`)
+      setTimeout(() => {
+        originalMethod.apply(this, args)
+      }, ms);
+
+      return descriptor;
+    }
+  }
+}
+
+class Greeter {
+  greeting: string;
+
+  constructor(g: string) {
+    this.greeting = g;
+  }
+
+  //esperar um tempo e aí vai rodar o método (ms)
+  @delay(2000)
+  greet() {
+    console.log(`Hello! ${this.greeting}`)
+  }
+
+}
+
+const pessoa = new Greeter('Pessoinha!')
+pessoa.greet()
+```
+
+</details>
